@@ -1,0 +1,8 @@
+dispatch:
+  # Send all api traffic to the backend service.
+  - url: "core.videogpt.pro/*"
+    service: core
+    
+  # Send all other traffic to the default (frontend).
+  - url: "*/*"
+    service: default

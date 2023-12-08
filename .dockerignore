@@ -1,0 +1,25 @@
+
+.gcloudignore
+.git
+.gitignore
+
+# Python pycache:
+__pycache__/
+langchain_api/__pycache__/
+# Ignored by the build system
+/setup.cfg
+
+# ignore local video files
+youtube/
+temp/
+test_data/
+tmp/
+/tmp/
+eyes/test_videos/
+
+# ignore archived code
+archive/
+
+# ignore venv
+env/
+

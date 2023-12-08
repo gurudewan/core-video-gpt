@@ -1,0 +1,23 @@
+service: default
+runtime: custom
+entrypoint: uvicorn main:app --host 0.0.0.0 --port 8080
+env: flex
+
+env_variables:
+  APP_ENV: PROD
+  OPENAI_API_KEY: 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
+  FIREBASE_CREDENTIALS: keys/firebase-keys-prod.json
+  GOOGLE_APPLICATION_CREDENTIALS: keys/storage-manager-keys-prod.json
+  DEV_DB_CONN_STRING: mongodb+srv://videogpt-dbuser-dev:FpwXFpLaa3OvCFLh@videogpt-cluster-dev.rrbvlrz.mongodb.net/dev_db?retryWrites=true&w=majority
+  PROD_DB_CONN_STRING: mongodb+srv://videogpt-admin-prod:DtxGBO7vGYCBX1SI@videogpt-cluster-prod.slh9p1m.mongodb.net/?retryWrites=true&w=majority
+
+  DO_FAKE_GPT_CALLS: False
+
+resources:
+  disk_size_gb: 20
+
+readiness_check:
+  app_start_timeout_sec: 600
+
+manual_scaling:
+  instances: 1
