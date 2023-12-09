@@ -72,6 +72,19 @@ def download_video_from_gcs(video_id: str, destination_file_path: str = None) ->
     return
 
 
+def delete_video_from_gcs(video_id: str) -> None:
+    """Deletes a video from Google Cloud Storage.
+
+    Args:
+        video_id (str): The ID of the video.
+    """
+    # Define the blob name
+    blob_name = f"/tmp/youtube/{video_id}/video.mp4"
+
+    # Delete the blob
+    gcs.delete_blob(blob_name)
+
+
 def make_video_public(video_id: str) -> None:
     """Makes a blob in Google Cloud Storage publicly accessible.
 

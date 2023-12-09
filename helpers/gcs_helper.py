@@ -81,6 +81,11 @@ class GCSHelper:
         for blob in blobs:
             blob.delete()
 
+    def delete_blob(self, blob_name):
+        """Deletes a blob from the bucket."""
+        blob = self.bucket.blob(blob_name)
+        blob.delete()
+
     def check_if_seen(self, video_id):
         key_frames_path = f"/tmp/{video_id}/key_frames/"
         view_path = f"/tmp/{video_id}/view/"
