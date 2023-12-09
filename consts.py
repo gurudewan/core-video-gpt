@@ -2,7 +2,7 @@
 import os
 
 # env
-APP_ENV = os.getenv("APP_ENV") if os.getenv("APP_ENV") is not None else "DEV"
+APP_ENV = os.getenv("APP_ENV") if os.getenv("APP_ENV") is not None else "PROD"
 # | "DEV" || "PROD"
 
 # ================== LANGCHAIN CONSTS ==================
@@ -14,7 +14,7 @@ CHUNK_OVERLAP = 50
 PROD_BUCKET_NAME = "video-gpt-prod-files"
 DEV_BUCKET_NAME = "video-chat-files"
 # BUCKET_NAME=DEV_BUCKET_NAME if APP_ENV == "DEV" else PROD_BUCKET_NAME
-BUCKET_NAME = PROD_BUCKET_NAME
+BUCKET_NAME = PROD_BUCKET_NAME if APP_ENV == "PROD" else DEV_BUCKET_NAME
 
 DEV_STORAGE_KEYS = "keys/storage-manager-keys-dev.json"
 PROD_STORAGE_KEYS = "keys/storage-manager-keys-prod.json"
@@ -27,7 +27,7 @@ FIREBASE_CREDENTIALS = os.getenv("FIREBASE_CREDENTIALS")
 
 # ================== OPENAI CONSTS ==================
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_MODEL = "gpt-3.5-turbo"
+OPENAI_MODEL = "gpt-3.5-turbo"  # gpt-4-1106-preview
 OPENAI_MODEL_FOR_SUMMARIES = "gpt-3.5-turbo-16k"
 MAX_TOKENS_FOR_SUMMARIES_OUTPUT = 300
 MAX_TOKENS_FOR_DESCRIPTIONS_OUTPUT = 300
@@ -37,7 +37,8 @@ DO_FAKE_GPT_CALLS = os.getenv("DO_FAKE_GPT_CALLS") == "True"
 
 # ================== PROMPTS ==================
 
-SUMMARISE_SYSTEM_PROMPT = "I'll give you data about a video, and then you have to summarise the video in text. The data will include: a subtitle (.srt) file, some related metadata, and some text descriptions of some of the video's keyframes. Summarise accurately and concisely, but also try to capture the essence, tone, emotion, and personality of the video. I'll give all of the data to you in one big blob of text."
+SUMMARISE_SYSTEM_PROMPT = "I'll give you a description about a video, and then you have to summarise the video. The data will include: the transcript file, some related metadata, and some text descriptions of some of the video's keyframes. Summarise accurately and concisely, but also try to capture the essence, tone, emotion, and personality of the video. I'll give all of the data to you in one big blob of text."
+GRAND_SUMMARY_SYSTEM_PROMPT = f"I'll give you two summaries: a summary of the transcript of my video, and then a summary of the key frames of my video. You need to merge the two summaries into one, without losing any of the content of either descriptions. No nonsense. Just give me the direct summary."
 CLEANUP_DESCRIPTION_SYSTEM_PROMPT = "I'll provide you with a YouTube description, taken directly from the video. You need to clean up all the extraneous information, which wouldn't be relevant to someone who wants to understand the video. Please give me only the relevant details I need to understand the actual content of the video, the speaker, or anything else that might be relevant. Please provide verbatim the bits of text you think are important, and nothing else."
 QA_SYSTEM_PROMPT = "You are videoGPT. I'll ask you a question, and then give you the relevant parts of the transcript of a video, the title of the video, a summary and decription of the video. Your job is to answer my questions about the video in a way that is concise and accurate. Your source of truth is the info I give you about the video, rather than what may actually be true in the real world. When I ask you a question, it's directed at the video, not at you. Try to extract identities of relevant people, names and things. Pay close attention to the title or description to contextualise the video. Be brief. Be concise.  Maintain the tone & essence of the video. Answer my questions directly. Don't say things like 'Based on the provided information' or 'Based on the sources'. Instead, refer to it as the video and just say what you want to say directly."
 
