@@ -3,10 +3,9 @@ from firebase_admin import auth, initialize_app, credentials
 from firebase_admin.auth import InvalidIdTokenError
 
 from database import humans_db
-import consts
+from consts import FIREBASE_CREDENTIALS
 
-print(consts.FIREBASE_CREDENTIALS)
-cred = credentials.Certificate(consts.FIREBASE_CREDENTIALS)
+cred = credentials.Certificate(FIREBASE_CREDENTIALS)
 
 # initialize Firebase
 default_app = initialize_app(credential=cred)
