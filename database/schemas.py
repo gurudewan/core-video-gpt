@@ -62,6 +62,8 @@ class VideoInfo(EmbeddedDocument):
     title = StringField(required=True)
     description = StringField(required=True)
     author_name = StringField(required=True)
+    key_frames_summary = StringField()
+    transcript_summary = StringField()
     summary = StringField()
     tags = ListField(StringField())
     duration = IntField(required=True)

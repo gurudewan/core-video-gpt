@@ -49,11 +49,35 @@ def chat(conversation, docs, video_metadata):
     return answer
 
 
-def summarise(text):
+def grand_summarise(key_frames_summary, transcript_summary):
+    messages = [
+        {"role": "system", "content": consts.GRAND_SUMMARY_SYSTEM_PROMPT},
+        {
+            "role": "user",
+            "content": f"The summary of the transcript is: {transcript_summary} and the summary of the key frames is {key_frames_summary}.",
+        },
+    ]
+    response = client.chat.completions.create(
+        model=consts.OPENAI_MODEL,
+        messages=messages,
+        max_tokens=consts.MAX_TOKENS_FOR_SUMMARIES_OUTPUT,
+    )
+    return response.choices[0].message.content
+
+
+def summarise(text, info):
     token_count = tokenizer.count_tokens(text)
     if token_count <= consts.BATCH_SIZE_FOR_BATCHED_SUMMARIES_INPUT:
         messages = [
             {"role": "system", "content": consts.SUMMARISE_SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": f"Use this info in your summary to contextualise. The title is {info['title']}. The description is {info['description']}. The uploader of the video is {info['author_name']}. The tags are {', '.join(info['tags'])}",
+            },
+            {
+                "role": "assistant",
+                "content": f"Next give me the text to summarise, and I'll give you the summary directly.",
+            },
             {"role": "user", "content": f"{text}"},
         ]
         response = client.chat.completions.create(

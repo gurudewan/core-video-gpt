@@ -32,6 +32,17 @@ def embed(video_id, info):
     title_doc = Document(
         page_content=info["title"], metadata={"video_id": video_id, "type": "title"}
     )
+
+    transcript_summary_doc = Document(
+        page_content=info["transcript_summary"],
+        metadata={"video_id": video_id, "type": "summary"},
+    )
+
+    key_frames_summary = Document(
+        page_content=info["key_frames_summary"],
+        metadata={"video_id": video_id, "type": "summary"},
+    )
+
     summary_doc = Document(
         page_content=info["summary"], metadata={"video_id": video_id, "type": "summary"}
     )
@@ -43,7 +54,14 @@ def embed(video_id, info):
     tags_doc = helpers.convert_tags_to_document(info["tags"], video_id)
 
     documents = (
-        [title_doc, summary_doc, description_doc, tags_doc]
+        [
+            title_doc,
+            transcript_summary_doc,
+            key_frames_summary,
+            summary_doc,
+            description_doc,
+            tags_doc,
+        ]
         + subtitle_sentence_documents
         + caption_docs
     )

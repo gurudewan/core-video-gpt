@@ -66,6 +66,8 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
 
         heard = True  # check transcipt file exists for the transcript
 
+        # TODO check if video is processing here as well?
+
         if video_is_old:
             pprint(f"-------video old: ID | {video_id}-------")
 
@@ -92,32 +94,23 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
 
             info = format_video_metadata(files["info"])
 
-            filer.stream_var_into_gcs(info, f"/tmp/youtube/{video_id}/info.json")
-
-            print("the info is")
-            print(info)
-
             video_path = f"tmp/youtube/{video_id}"
 
-            print("====uploading to gcs====")
-            gcs.upload_folder_to_gcs(video_path, "/" + video_path)
+            # print("====uploading to gcs====")
+            # gcs.upload_folder_to_gcs(video_path, "/" + video_path)
+            # TODO create an empty folder here instead > which means it is processing
 
             subs_text = srt_helper.load_subtitles_text_only(files["subs"])
 
             print("===doing chatgpt stuff===")
 
-            input_for_summary = subs_text
-            # TODO use view in summary as well?
-            #  + key_frames_captions
-
-            info["summary"] = chatgpt.summarise(input_for_summary)
-
             info["description"] = chatgpt.clean_up_description(info["description"])
 
-            update_info(files["info"], info)
+            transcript_summary = chatgpt.summarise(subs_text, info)
+            info["transcript_summary"] = transcript_summary
 
             print("===viewing video===")
-            # view: ViewedVideo = await eyes.see(video_id)
+
             view = await eyes.see(video_id, info)
 
             info["view"] = view
@@ -125,6 +118,19 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
             key_frames_captions = "/////NEW SCENE//////".join(
                 [str(item["caption"]) for item in view if item["caption"] is not None]
             )
+
+            key_frames_summary = chatgpt.summarise(key_frames_captions, info)
+            info["key_frames_summary"] = key_frames_summary
+
+            overall_summary = chatgpt.grand_summarise(
+                transcript_summary, key_frames_summary
+            )
+
+            info["summary"] = overall_summary
+
+            update_info(files["info"], info)
+
+            filer.stream_var_into_gcs(info, f"/tmp/youtube/{video_id}/info.json")
 
             print("===doing langchain===")
 
@@ -134,18 +140,21 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
             gcs.upload_folder_to_gcs(video_path, "/" + video_path)
 
             filer.delete_folder(video_path)
+            filer.delete_video_from_gcs(video_id)
 
             end = time.time()
             elapsed_time = end - start
-            print(f"Processed video: {video_id} in {elapsed_time} seconds")
+            print(f"processed video: {video_id} in {elapsed_time} seconds")
 
         chat_id = chats_app.create_chat(human_id, info)
-        # return info
+
         print(f"successfully processed video {video_id}")
         return {"chat_id": str(chat_id)}
 
     except Exception as e:
         print(f"upload failed for {video_id}, cleaning up")
+        print(f"exception: {e}")
+
         if video_path:
             filer.delete_folder(video_path)
             gcs.delete_folder("/" + video_path)

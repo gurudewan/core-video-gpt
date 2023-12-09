@@ -36,6 +36,6 @@ def convert_captions_to_documents(captions_data, video_id):
 
 def convert_tags_to_document(tags, video_id):
     return Document(
-        page_content=",".join(tags),
+        page_content=", ".join(tags),
         metadata={"video_id": video_id, "type": "tags"},
     )

@@ -32,7 +32,7 @@ async def caption_image(image, info):
                         "content": [
                             {
                                 "type": "text",
-                                "text": f"The key scene is attached. The video is titled '{info['title']}' and the author is '{info['author_name']}'. The summary of the transcript is: {info['summary']}. ",
+                                "text": f"The key scene is attached. The video is titled '{info['title']}'. The uploader of the video is '{info['author_name']}'. The summary of the transcript is: {info['transcript_summary']}. The tags are {', '.join(info['tags'])}.",
                             },
                             {"type": "image_url", "image_url": image["image_url"]},
                         ],
@@ -41,10 +41,10 @@ async def caption_image(image, info):
                 max_tokens=300,
             )
             output = response.choices[0].message.content
-            print("-----")
-            print(image["image_url"])
-            print(output)
-            print("======")
+            # print("-----")
+            # print(image["image_url"])
+            # print(output)
+            # print("======")
         except Exception as e:
             if "rate_limit_exceeded" in str(e):
                 print(f"Rate limit exceeded while processing {image['image_url']}: {e}")
