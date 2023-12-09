@@ -16,8 +16,6 @@ from . import llava_api
 from . import gptvision
 import filer
 
-import pickle
-
 from consts import APP_ENV
 
 # Load the clip model
@@ -61,20 +59,22 @@ async def see(video_id, info):
 
     # print(all_frame_embeddings)
     key_scenes = extract_key_scenes(all_frame_embeddings)
-    print(key_scenes)
+    # print(key_scenes)
 
     grouped_frames, frame_groups = group_similar_frames(key_scenes)
 
     # Print grouped frames without embeddings
+    """
     for _, start_timestamp, end_timestamp, group_id in grouped_frames:
         print(
             f"Start Timestamp: {start_timestamp}, End Timestamp: {end_timestamp}, Group: {group_id}"
         )
-
+    """
     # Print frame_groups without embeddings
+    """
     for _, periods, group_id in frame_groups:
         print(f"Periods: {periods}, Group: {group_id}")
-
+    """
     # write grouped_frames, frame_groups to gcs
     grouped_frames = [(start, end, group) for _, start, end, group in grouped_frames]
     frame_groups = [(periods, group_id) for _, periods, group_id in frame_groups]
@@ -92,7 +92,7 @@ async def see(video_id, info):
 
     filer.stream_var_into_gcs(view, base_view_url + "view.json")
 
-    pprint(view)
+    # pprint(view)
 
     print(f"===== summary of view =====")
     # log the summary of the view
@@ -102,7 +102,7 @@ async def see(video_id, info):
 
     print(f"##### num of frames captioned: {num_frames}")
 
-    print("===== DONE =====")
+    print("===== viewing complete =====")
 
     return view
 
@@ -386,8 +386,8 @@ def write_key_scenes_to_memory(frame_groups, video_url, video_id):
             {"image_url": image_url, "group_id": group_id, "periods": periods}
         )
 
-        print("----")
-        print(image_url)
+        # print("----")
+        # print(image_url)
 
     # Release the video file
     video.release()

@@ -65,6 +65,7 @@ def download_youtube_video(url):
                     "format": "srt",  # Convert subtitles to srt format
                 }
             ],
+            "quiet": True,
         }
 
         try:

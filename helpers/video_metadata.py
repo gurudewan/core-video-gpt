@@ -9,8 +9,9 @@ from pprint import pprint
 def format_video_metadata(info_path):
     with open(info_path, "r") as json_file:
         info = json.load(json_file)
-    pprint(info)
-    print("============ is the info -------")
+    # pprint(info)
+    # print("============ is the info -------")
+
     formatted_info = {
         "platform_video_id": info["id"],
         "platform_id": "youtube",
@@ -44,5 +45,5 @@ def update_info(info_path, new_info):
                 return obj
 
         new_info = handle_viewed_image(new_info)
-        pprint(new_info)
+
         json.dump(new_info, json_file, indent=4)
