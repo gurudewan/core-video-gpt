@@ -32,12 +32,11 @@ RUN whereis ffmpeg
 #RUN python -c "import clip; model, preprocess = clip.load('ViT-B/32', download_root='/usr/src/app/torch_cache')"
 #RUN ls -la /usr/src/app/torch_cache && find /usr/src/app/torch_cache -name 'ViT-B/32'
 
-
 # ====================== DEBUG: DOUBLE DOWNLOAD opency-python-headless
 # TODO delete this
-RUN python -m pip install opencv-python-headless
+#RUN python -m pip install opencv-python-headless
 
-RUN python -c "import cv2; print(cv2.__version__)"
+#RUN python -c "import cv2; print(cv2.__version__)"
 
 # ====================== COPY OVER APP
 
@@ -52,6 +51,10 @@ COPY . .
 # Print the contents of the storage-manager-keys.json file
 #RUN cat /usr/src/app/keys/storage-manager-keys.json
 
+
+ENV GOOGLE_APPLICATION_CREDENTIALS="keys/storage-manager-keys-prod.json"
+ENV FIREBASE_CREDENTIALS="keys/firebase-keys-prod.json"
+
 # ====================== FINISH
 
-CMD [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080" ]
+ENTRYPOINT uvicorn main:app --host 0.0.0.0 --port $PORT
