@@ -20,7 +20,7 @@ from helpers.highlights_helper import extract_highlights
 import time
 from pprint import pprint
 from type_models import ViewedImage, ViewedVideo
-
+import consts
 
 from apis.auth.firebase_header import auth_header
 
@@ -28,43 +28,38 @@ from apis.auth.firebase_header import auth_header
 
 # from apis.chats_app import chats_app
 import apis.chats_app as chats_app
+from apis.auth.firebase_auth_app import auth_app
 
 app = FastAPI()
 
 # app.include_router(auth_api)
 app.include_router(chats_app.chats_app)
-
-# CORS config
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+app.include_router(auth_app)
 
 
 @app.get("/")
 def health_check():
-    return {"status": 200, "message": "videoGPT's core is online"}
+    return {"status": 200, "message": "videoGPT's hard-core is online"}
 
 
 @app.post("/video")
 async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
+    video_path = None
     try:
         video_url = video.video_url
 
         video_id = video_converter.quickly_get_youtube_video_id(video_url)
 
         if video_id is None:
-            raise HTTPException(status_code=404, detail="Invalid YouTube URL")
+            raise HTTPException(status_code=422, detail="Invalid YouTube URL")
 
         video_is_old = filer.video_exists(video_id)
 
-        seen = gcs.check_if_seen(video_id)  # check gcs file exists for the key frames
+        seen = gcs.check_if_seen(
+            video_id
+        )  # TODO check gcs file exists for the key frames
 
-        heard = True  # check transcipt file exists for the transcript
+        heard = True  # TODO check transcipt file exists for the transcript
 
         # TODO check if video is processing here as well?
 
@@ -80,16 +75,27 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
 
             start = time.time()
 
+            duration = video_converter.get_youtube_video_duration(video_id)
+
+            if duration > consts.MAX_VIDEO_DURATION or duration is None:
+                print("MAX DURATION EXCEEDED")
+                raise HTTPException(
+                    status_code=422, detail="video-exceeded-max-duration"
+                )
+
             subs_available = video_converter.check_subtitles_available(video_url)
 
             if not subs_available:
                 # TODO auto transcribe
                 # transcript = transcribe(video_path)
-                raise HTTPException(status_code=422, detail="No transcript available")
+                raise HTTPException(status_code=422, detail="no-transcript-available")
 
             print("====downloading video====")
 
-            files = video_converter.download_youtube_video(video_url)
+            files = video_converter.download_youtube_video(
+                video_url
+            )  # contains all the data for the docs
+
             print("====download complete====")
 
             info = format_video_metadata(files["info"])
@@ -150,7 +156,8 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
 
         print(f"successfully processed video {video_id}")
         return {"chat_id": str(chat_id)}
-
+    except HTTPException as http_error:
+        raise http_error
     except Exception as e:
         print(f"upload failed for {video_id}, cleaning up")
         print(f"exception: {e}")
@@ -161,5 +168,16 @@ async def post_video(video: VideoInput, human_id: str = Depends(auth_header)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# CORS config
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000, workers=10)

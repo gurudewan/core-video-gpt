@@ -40,6 +40,9 @@ def update_chat(chat_id, metadata):
 
 def get_chats_by_human_id(human_id):
     chats = Chat.objects(human_id=human_id).order_by("-timestamps.created")
+
+    # ordered_chats = chats[::-1]
+
     return [
         {
             "chat_id": str(chat.id),
@@ -49,6 +52,12 @@ def get_chats_by_human_id(human_id):
         }
         for chat in chats
     ]
+
+
+def get_videos_from_chats(human_id):
+    chats = Chat.objects(human_id=human_id).order_by("-timestamps.created")
+
+    return list({chat.video_info.platform_video_id for chat in chats})
 
 
 def delete_chat_by_id(chat_id, human_id):

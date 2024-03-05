@@ -1,4 +1,6 @@
 from pydantic import BaseModel
 
-class Email(BaseModel):
+
+class MagicInput(BaseModel):
     email: str
+    doChromeAuth: bool = False
