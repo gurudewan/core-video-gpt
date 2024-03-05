@@ -83,3 +83,8 @@ class Chat(Document):
     title = StringField(required=True)
     messages = ListField(EmbeddedDocumentField(Message))
     timestamps = EmbeddedDocumentField(Timestamps)
+    meta = {
+        "indexes": [
+            "timestamps.created",
+        ]
+    }

@@ -7,7 +7,8 @@ client = OpenAI()
 
 def chat(conversation, docs, video_metadata):
     sources = [doc.page_content for doc in docs]
-    print(sources)
+
+    # print(sources)
 
     messages = []
 
@@ -32,11 +33,6 @@ def chat(conversation, docs, video_metadata):
         video_message.append(
             "The relevant parts of the video are: " + " ".join(sources)
         )
-
-    print("the system prompt is")
-    print(consts.QA_SYSTEM_PROMPT)
-    print("the final prompt is")
-    print(video_message)
 
     messages.append({"role": "user", "content": " ".join(video_message)})
 
@@ -134,7 +130,6 @@ def clean_up_description(text):
         batches = batch_text(text)
         descs = []
         for batch in batches:
-            print(f"batch has size {tokenizer.count_tokens(batch)}")
             messages = [
                 {"role": "system", "content": consts.CLEANUP_DESCRIPTION_SYSTEM_PROMPT},
                 {"role": "user", "content": f"{batch}"},

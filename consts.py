@@ -2,8 +2,14 @@
 import os
 
 # env
-APP_ENV = os.getenv("APP_ENV") if os.getenv("APP_ENV") is not None else "PROD"
+APP_ENV = "PROD"
+# os.getenv("APP_ENV") if os.getenv("APP_ENV") is not None else "DEV"
 # | "DEV" || "PROD"
+
+
+# ================== YOUTUBE CONSTS ==================
+MAX_VIDEO_DURATION = 1500
+
 
 # ================== LANGCHAIN CONSTS ==================
 MAX_NUM_SENTENCES = 100  # not used anymore
@@ -14,7 +20,7 @@ CHUNK_OVERLAP = 50
 PROD_BUCKET_NAME = "video-gpt-prod-files"
 DEV_BUCKET_NAME = "video-chat-files"
 # BUCKET_NAME=DEV_BUCKET_NAME if APP_ENV == "DEV" else PROD_BUCKET_NAME
-BUCKET_NAME = PROD_BUCKET_NAME if APP_ENV == "PROD" else DEV_BUCKET_NAME
+BUCKET_NAME = PROD_BUCKET_NAME  # if APP_ENV == "PROD" else DEV_BUCKET_NAME
 
 DEV_STORAGE_KEYS = "keys/storage-manager-keys-dev.json"
 PROD_STORAGE_KEYS = "keys/storage-manager-keys-prod.json"
@@ -45,6 +51,7 @@ QA_SYSTEM_PROMPT = "You are videoGPT. I'll ask you a question, and then give you
 
 # ================== MONGO DB ==================
 
+
 DB_CONN_STRING = (
     os.getenv("PROD_DB_CONN_STRING")
     if APP_ENV == "PROD"
@@ -52,6 +59,8 @@ DB_CONN_STRING = (
 )
 if DB_CONN_STRING is None:
     print("DB_CONN_STRING is not configured in the .env")
+
+# DB_CONN_STRING = os.getenv("PROD_DB_CONN_STRING")
 
 # ================== ARCHIVE ==================
 AZURE_ACCOUNT_ID = "a6fdeb9c-a185-40a2-a4b1-bb400d7f1b7a"

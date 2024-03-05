@@ -100,3 +100,25 @@ def check_subtitles_available(url):
             return False  # Captions are not available
         else:
             return True  # Captions are available
+
+
+def get_youtube_video_duration(video_id):
+    """
+    Returns the duration of a YouTube video given its ID.
+    """
+    ydl_opts = {
+        "extract_flat": True,
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(video_id, download=False)
+        if "duration" in info:
+            return info["duration"]
+        else:
+            return None
+
+
+if __name__ == "__main__":
+    # duration = get_youtube_video_duration("aHGd6LqAVzw")
+    # print(duration)
+    print("testing area")

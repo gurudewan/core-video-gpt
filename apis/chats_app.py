@@ -40,25 +40,12 @@ def fetch_chat(chat_id: str, human_id: str):
     # return the new chat
 
     chat = chats_db.find_chat_by_id(chat_id, human_id)
-    print("the chat im returning is ")
-
-    pprint(chat.to_mongo().to_dict())
 
     return ChatResponse(**chat.to_mongo().to_dict())
 
 
 @chats_app.post("/chat")
 def ask_question(chat_input: RootChatInput, human_id: str = Depends(auth_header)):
-    print(chat_input)
-
-    # take out the chat_id
-    # find the chat in the db
-    # append the user message
-    # append the AI message
-
-    # chat_id = None
-    # chats_db.update_chat(chat_id, {})
-
     conversation = chat_input.messages
     user_question = next(
         (
@@ -97,9 +84,22 @@ def get_all_chats(human_id: str = Depends(auth_header)):
     """
     returns all the chats of a user
     """
+
     all_chats = chats_db.get_chats_by_human_id(human_id)
 
     return all_chats
+
+
+@chats_app.get("/my-videos")
+def get_all_videos_from_chats(human_id: str = Depends(auth_header)):
+    """
+    returns all the videos of a user
+    """
+
+    all_videos = chats_db.get_videos_from_chats(human_id)
+    print("returining all videos")
+    print(len(all_videos))
+    return all_videos
 
 
 @chats_app.delete("/chat/{chat_id}")

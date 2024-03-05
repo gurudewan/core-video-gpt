@@ -30,7 +30,7 @@ model, preprocess = clip.load("./torch_cache/ViT-B-32.pt")
 
 # Define the frame rate
 FRAME_RATE = 1  # this is not used anymore
-FRAME_SKIP = 24 * 3  # 1 means check every frame, n means check every nth
+FRAME_SKIP = 24 * 60  # 24 * X means everyth Xth second (due to ~ 24fps)
 
 FOCUS_THRESHOLD = 500  # Adjust this value based on your needs
 MOTION_THRESHOLD = 10000  # Adjust this value based on your needs
@@ -140,7 +140,7 @@ def extract_all_frames(video_url):
             break
 
         # If this is a frame we want to process
-        if frame_count % frame_skip == 0:
+        if frame_count % FRAME_SKIP == 0:
             # Get the timestamp of the current frame
             timestamp = frame_count / fps
 
@@ -150,11 +150,13 @@ def extract_all_frames(video_url):
             # Calculate the motion measure with the previous frame
             # motion_measure = calculate_motion(prev_frame, frame)
 
+            # TODO calculate the pixel subtraction
+
             embeddings = get_image_embeddings(frame)
 
             # Store the embeddings and timestamp in the results list
             results.append((embeddings, timestamp))
-            print("on timestamp " + str(round(timestamp, 2)))
+            # print("on timestamp " + str(round(timestamp, 2)))
             """
             # Only calculate embeddings if the focus measure is above the threshold and motion measure is below the threshold
             if (
