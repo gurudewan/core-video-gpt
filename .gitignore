@@ -15,6 +15,7 @@ __pycache__/
 tmp/
 # test data
 test_data/
+eyes/test_eyes/
 
 # Distribution / packaging
 .DS_Store
