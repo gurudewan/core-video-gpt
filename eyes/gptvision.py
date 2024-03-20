@@ -1,6 +1,9 @@
 import asyncio
 from openai import OpenAI
 import random
+from consts import Consts
+
+consts = Consts()
 
 from type_models import ViewedImage
 
@@ -8,9 +11,8 @@ from type_models import ViewedImage
 import eyes.fake_captions as fake_captions
 
 semaphore = asyncio.Semaphore(10)  # 10 requests per second
-client = OpenAI()
 
-import consts
+client = OpenAI(api_key=consts.OPENAI_API_KEY)
 
 
 async def caption_image(image, info):

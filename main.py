@@ -27,7 +27,9 @@ from apis.auth.firebase_header import auth_header
 # from apis.auth.auth_api import auth_api
 
 # from apis.chats_app import chats_app
+import apis.humans_app as humans_app
 import apis.chats_app as chats_app
+import apis.stripe_app as stripe_app
 from apis.auth.firebase_auth_app import auth_app
 
 app = FastAPI()
@@ -35,6 +37,8 @@ app = FastAPI()
 # app.include_router(auth_api)
 app.include_router(chats_app.chats_app)
 app.include_router(auth_app)
+app.include_router(stripe_app.stripe_app)
+app.include_router(humans_app.humans_app)
 
 
 @app.get("/")

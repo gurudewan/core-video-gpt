@@ -1,12 +1,15 @@
 import tiktoken
-import consts
+from consts import Consts
+
+consts = Consts()
 
 
-def count_tokens(text, model=consts.OPENAI_MODEL):    
+def count_tokens(text, model=consts.OPENAI_MODEL):
     encoding = tiktoken.encoding_for_model(model)
     tokens = encoding.encode(text)
     token_count = len(tokens)
     return token_count
+
 
 def tokenize_and_count(text, model=consts.OPENAI_MODEL):
     encoding = tiktoken.encoding_for_model(model)

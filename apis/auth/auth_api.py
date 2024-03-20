@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request, HTTPException
 from apis.auth import tokeniser, postman
 from apis.auth import auth_types
 
-from database import humans
+from database import humans_db
 
 auth_api = APIRouter(prefix="/auth")
 
@@ -22,7 +22,7 @@ async def get_magic_email(email: auth_types.Email):
     data = {}
 
     # Add new user or get existing user
-    _id = humans.add_new_or_get_human(email_addr, "lifetime", 100, 100)
+    _id = humans_db.add_new_or_get_human(email_addr, "lifetime", 100, 100)
 
     if _id is None:
         raise HTTPException(status_code=501, detail="Error adding or retrieving user")
@@ -90,7 +90,7 @@ async def check_auth(request: Request):
 
     data = tokeniser.decode_token(auth_token, "auth")
     human_id = data["_id"]
-    human = humans.find_human_by_id(human_id)
+    human = humans_db.find_human_by_id(human_id)
     human_email = human.email if human else None
 
     access_token = tokeniser.create_token(data, "access")

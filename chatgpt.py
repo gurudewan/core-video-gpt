@@ -1,8 +1,10 @@
 from openai import OpenAI
 import helpers.tokenizer as tokenizer
-import consts
+from consts import Consts
 
-client = OpenAI()
+consts = Consts()
+
+client = OpenAI(api_key=consts.OPENAI_API_KEY)
 
 
 def chat(conversation, docs, video_metadata):

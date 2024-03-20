@@ -11,7 +11,9 @@ from urllib.parse import urlencode
 
 auth_app = APIRouter()
 
-from consts import VIDEOGPT_APP_URL
+from consts import Consts
+
+consts = Consts()
 
 
 @auth_app.post("/custom-token")
@@ -27,7 +29,7 @@ async def get_magic_link(magic_input: MagicInput):
         email = magic_input.email
 
         continue_url = (
-            VIDEOGPT_APP_URL
+            consts.VIDEOGPT_APP_URL
             + "?"
             + urlencode({"email": email, "doChromeAuth": magic_input.doChromeAuth})
         )

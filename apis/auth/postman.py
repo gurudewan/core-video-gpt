@@ -6,7 +6,9 @@ import logging
 
 from .templates import login_email
 
-from consts import APP_ENV, VIDEOGPT_APP_URL
+from consts import Consts
+
+consts = Consts()
 
 email_address = "flowmushin@gmail.com"
 email_password = "haefiuvrowtnfcez"

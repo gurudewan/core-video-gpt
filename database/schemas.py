@@ -15,33 +15,38 @@ from mongoengine import (
     DateTimeField,
     EmbeddedDocumentField,
     DynamicField,
+    EmbeddedDocumentField,
+    BooleanField,
 )
 
 from mongoengine import connect
 
-from consts import DB_CONN_STRING
+from consts import Consts
 
-if DB_CONN_STRING is None:
+consts = Consts()
+
+if consts.DB_CONN_STRING is None:
     print("ERROR: set the DB_CONN_STRING as an env var")
 
 
-connect(host=DB_CONN_STRING)
+connect(host=consts.DB_CONN_STRING)
+
+
+class Subscription(EmbeddedDocument):
+    plan = StringField(required=True)
+    start_date = DateTimeField()
+    end_date = DateTimeField()
+    is_active = BooleanField(required=True)
+    stripe_subscription_id = StringField()
 
 
 class Human(Document):
     email = StringField(required=True)
-
     firebase_id = StringField(required=True)
-
-    subscription_type = StringField(
-        required=True, choices=("free", "student", "hobby", "pro", "lifetime")
-    )
+    subscription = EmbeddedDocumentField(Subscription)
     tokens_left = IntField(required=True)
     tokens_allowed = IntField(required=True)
-
     sign_up_date = DateTimeField(required=True)
-    last_login = DateTimeField()
-    plan_refresh_date = DateTimeField()
 
     stripe_customer_id = StringField()
 

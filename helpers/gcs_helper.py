@@ -2,8 +2,10 @@ from google.cloud import storage
 import json
 import os
 
-import consts
+from consts import Consts
 from helpers.json_encoder import DocumentEncoder
+
+consts = Consts()
 
 
 class GCSHelper:
