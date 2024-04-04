@@ -48,19 +48,51 @@ class ChatResponse(DBModelMixin):
         extra = "allow"
 
 
+class MonthlyUsage(BaseModel):
+    num_videos_processed: int
+    duration_videos_processed_hours: float
+
+
 class SubscriptionPlan(Enum):
     FREE = "FREE"
-    HOBBY = "HOBBY"
+    BASIC = "BASIC"
     PLUS = "PLUS"
     PRO = "PRO"
 
 
+class SubscriptionStatus(Enum):
+    ACTIVE = "ACTIVE"
+    DELETED = "DELETED"
+    PAUSED = "PAUSED"
+    CANCELED = "CANCELED"
+
+
+class StripeSubscriptionStatus(Enum):
+    ACTIVE = "ACTIVE"
+    DELETED = "DELETED"
+    PAUSED = "PAUSED"
+    CANCELED = "CANCELED"
+
+    TRIALING = "TRIALING"
+    INCOMPLETE = "INCOMPLETE"
+    INCOMPLETE_EXPIRED = "INCOMPLETE_EXPIRED"
+    PAST_DUE = "PAST_DUE"
+    UNPAID = "UNPAID"
+
+
+class SubscriptionCycle(Enum):
+    MONTHLY = "MONTHLY"
+    YEARLY = "YEARLY"
+
+
 class Subscription(BaseModel):
     plan: SubscriptionPlan
-    start_date: datetime
-    end_date: datetime | None
-    is_active: bool
-    stripe_subscription_id: str | None
+    status: SubscriptionStatus
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+    cycle: SubscriptionCycle | None = None
+    stripe_subscription_id: str | None = None
+    stripe_subscription_status: StripeSubscriptionStatus | None = None
 
 
 class HumanResponse(DBModelMixin):
@@ -68,7 +100,5 @@ class HumanResponse(DBModelMixin):
     email: EmailStr
     firebase_id: str
     stripe_customer_id: str | None
-    subscription: Subscription
-    tokens_left: int
-    tokens_allowed: int
+    subscription: Subscription | None
     sign_up_date: datetime

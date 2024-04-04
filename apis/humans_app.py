@@ -3,34 +3,52 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 
-from database import humans_db
+from database import humans_db, subs_db
 from apis.auth.firebase_header import auth_header
 
-from api_types import HumanResponse, Subscription
+from api_types import (
+    HumanResponse,
+    Subscription,
+    SubscriptionPlan,
+    SubscriptionStatus,
+    SubscriptionCycle,
+)
 
-humans_app = APIRouter()
+humans_app = APIRouter(tags=["human"])
 
 
-@humans_app.post("/get-human", response_model=HumanResponse)
+@humans_app.post("/get-human")
 def get_human(human_id: str = Depends(auth_header)):
     human = humans_db.find_human_by_id(human_id)
     if human:
-        print(human.subscription)
 
-        # subscription = Subscription(**human.subscription)
-        subscription_dict = jsonable_encoder(human.subscription)
+        subscription = subs_db.get_sub_by_human_id(human_id)
+
+        if subscription is not None:
+            subscription = Subscription(
+                plan=subscription.plan,
+                status=subscription.status,
+                start_date=subscription.start_date,
+                end_date=subscription.end_date,
+                stripe_subscription_id=subscription.stripe_subscription_id,
+                stripe_subscription_status=subscription.stripe_subscription_status,
+                cycle=subscription.cycle,
+            )
+
+        else:
+            subscription = Subscription(
+                plan=SubscriptionPlan.FREE,
+                status=SubscriptionStatus.ACTIVE,
+            )
 
         # Create an instance of HumanResponse
         human_response = HumanResponse(
-            id=str(human.id),  # Convert ObjectId to string
+            id=str(human.id),
             email=human.email,
             firebase_id=human.firebase_id,
             stripe_customer_id=human.stripe_customer_id,
-            subscription=subscription_dict,  # TODO subscription
-            tokens_left=human.tokens_left,
-            tokens_allowed=human.tokens_allowed,
+            subscription=subscription,
             sign_up_date=human.sign_up_date,
-            # Add other fields as necessary
         )
         return human_response
     return JSONResponse(status_code=404, content={"message": "Human not found"})
