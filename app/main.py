@@ -5,11 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 # from apis.auth.auth_api import auth_api
 
 # from apis.chats_app import chats_app
-import app.routes.humans_app as humans_app
-import app.routes.chats_app as chats_app
-import app.routes.stripe_apps.stripe_app as stripe_app
-import app.routes.auth.firebase_auth_app as auth_app
-import app.routes.video_app as video_app
+import app.apis.humans_app as humans_app
+import app.apis.chats_app as chats_app
+import app.apis.stripe_apps.stripe_app as stripe_app
+import app.apis.auth.firebase_auth_app as auth_app
+import app.apis.video_app as video_app
 
 app = FastAPI()
 
