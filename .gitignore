@@ -15,9 +15,9 @@ __pycache__/
 tmp/
 # test data
 test_data/
-eyes/test_eyes/
-eyes/test_eyes/videos/
-eyes/playground/videos/
+app/eyes/test_eyes/
+app/eyes/test_eyes/videos/
+app/eyes/playground/videos/
 
 
 # Distribution / packaging

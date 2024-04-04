@@ -1,6 +1,6 @@
 import time
-from database import humans_db
-from database.schemas import Human
+from app.database import humans_db
+from app.database.schemas import Human
 
 from stripe_api import stripe_api
 import stripe
