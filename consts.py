@@ -4,11 +4,11 @@ from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
 
-class Consts(BaseSettings):
+class consts(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
     # env
-    APP_ENV: str = "DEV"
+    APP_ENV: str = "PROD"
     # os.getenv("APP_ENV") if os.getenv("APP_ENV") is not None else "DEV"
     # | "DEV" || "PROD"
 
@@ -34,6 +34,11 @@ class Consts(BaseSettings):
 
     # ================== FIREBASE ==================
     FIREBASE_CREDENTIALS: str = "keys/firebase-keys-prod.json"
+
+    # ================== EMAIL ==================
+
+    EMAIL_ADDRESS: str = "flowmushin@gmail.com"
+    EMAIL_PASSWORD: str = "drhrojxsrpquzirx"  # OLD: "haefiuvrowtnfcez"
 
     # ================== OPENAI CONSTS ==================
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
@@ -84,7 +89,7 @@ class Consts(BaseSettings):
     )
 
     DB_CONN_STRING: str = (
-        PROD_DB_CONN_STRING if APP_ENV == "PROD" else PROD_DB_CONN_STRING
+        PROD_DB_CONN_STRING if APP_ENV == "PROD" else DEV_DB_CONN_STRING
     )
 
     if DB_CONN_STRING is None:
@@ -107,3 +112,33 @@ class Consts(BaseSettings):
     # ================== PORT ==================
 
     PORT: int = 8080
+
+    # ================== STRIPE ==================
+
+    # API KEY
+
+    DEV_STRIPE_API_KEY: str = (
+        "sk_test_51OqkmEG64cILHqiWMJh3EWugoPXxdOCKP4z5auG0CRVcmrwXUOlbg2R7NmnvXA9uOBspLs7bEoJMwNzTk9HYDtuC00DU75dy4K"
+    )
+
+    PROD_STRIPE_API_KEY: str = (
+        "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"
+    )
+
+    STRIPE_API_KEY: str = DEV_STRIPE_API_KEY
+
+    # WEBHOOK SECRET
+
+    DEV_STRIPE_WEBHOOK_SECRET: str = (
+        "whsec_4c480cb9b13b7c53a109849f6686e3e0402b205c8cc795c62070fa50ab000f73"
+    )
+
+    PROD_STRIPE_WEBHOOK_SECRET: str = ""
+
+    STRIPE_WEBHOOK_SECRET: str = DEV_STRIPE_WEBHOOK_SECRET
+
+    # RETURN URL
+
+    STRIPE_CHECKOUT_RETURN_URL: str = (
+        VIDEOGPT_APP_URL + "/stripe-checkout-complete?session_id={CHECKOUT_SESSION_ID}"
+    )
