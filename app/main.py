@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import app.apis.humans_app as humans_app
 import app.apis.chats_app as chats_app
 import app.apis.stripe_apps.stripe_app as stripe_app
-import app.apis.auth.firebase_auth_app as auth_app
+import app.apis.auth_app.firebase_auth_app as auth_app
 import app.apis.video_app as video_app
 
 app = FastAPI()

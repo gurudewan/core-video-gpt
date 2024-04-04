@@ -17,7 +17,6 @@ from memory_profiler import memory_usage
 model, preprocess = clip.load("./torch_cache/ViT-B-32.pt")
 
 
-# import helpers.tensor_helper as tensor_helper
 import app.file_api.filer as filer
 
 from app.consts import consts

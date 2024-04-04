@@ -10,8 +10,6 @@ from sklearn.cluster import KMeans
 from pprint import pprint
 import asyncio
 
-# import helpers.tensor_helper as tensor_helper
-
 from . import llava_api
 from . import gptvision
 import app.file_api.filer as filer

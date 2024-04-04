@@ -15,7 +15,7 @@ from app.helpers.video_metadata import format_video_metadata, update_info
 from app.helpers.gcs_helper import gcs
 from app.helpers.highlights_helper import extract_highlights
 
-from app.apis.auth.firebase_header import auth_header
+from app.apis.auth_app.firebase_header import auth_header
 
 import time
 from pprint import pprint

@@ -4,7 +4,7 @@ from app.types.api_types import ChatResponse
 
 chats_app = APIRouter(tags=["chats"])
 
-from app.apis.auth.firebase_header import auth_header
+from app.apis.auth_app.firebase_header import auth_header
 
 import app.langchain_api.langchainer as langchainer
 

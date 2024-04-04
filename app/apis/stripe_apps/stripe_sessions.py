@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 from fastapi import APIRouter, HTTPException, Depends
-from app.apis.auth.firebase_header import auth_header
+from app.apis.auth_app.firebase_header import auth_header
 
 from app.database import humans_db
 

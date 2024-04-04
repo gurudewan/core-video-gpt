@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from firebase_admin import auth
 
-from app.apis.auth.firebase_header import firebase_auth_header
+from app.apis.auth_app.firebase_header import firebase_auth_header
 
-from app.apis.auth import postman
+from app.apis.auth_app import postman
 
-from app.apis.auth.auth_types import MagicInput
+from app.apis.auth_app.auth_types import MagicInput
 
 from urllib.parse import urlencode
 
