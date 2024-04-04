@@ -20,7 +20,7 @@ SECRETS = {
     "refresh": "flowgauravD1flow",
 }
 
-ENV = consts.APP_ENV
+ENV = consts().APP_ENV
 
 
 def create_token(data, jwtype):

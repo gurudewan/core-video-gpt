@@ -2,15 +2,13 @@ from google.cloud import storage
 import json
 import os
 
-from consts import Consts
+from consts import consts
 from helpers.json_encoder import DocumentEncoder
-
-consts = Consts()
 
 
 class GCSHelper:
     def __init__(self):
-        self.bucket_name = consts.BUCKET_NAME
+        self.bucket_name = consts().BUCKET_NAME
         self.client = storage.Client()
         self.bucket = self.client.get_bucket(self.bucket_name)
 

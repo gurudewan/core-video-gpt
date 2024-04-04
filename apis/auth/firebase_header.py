@@ -3,11 +3,10 @@ from firebase_admin import auth, initialize_app, credentials
 from firebase_admin.auth import InvalidIdTokenError
 
 from database import humans_db
-from consts import Consts
+from consts import consts
 
-consts = Consts()
 
-cred = credentials.Certificate(consts.FIREBASE_CREDENTIALS)
+cred = credentials.Certificate(consts().FIREBASE_CREDENTIALS)
 
 # initialize Firebase
 default_app = initialize_app(credential=cred)
@@ -33,7 +32,7 @@ async def auth_header(request: Request):
     if email is None:
         email = f"{firebase_id}@videogpt.pro"
 
-    human_id = humans_db.add_new_or_get_human(firebase_id, email)
+    human_id = humans_db.add_new_or_get_human(firebase_id, email).id
 
     return human_id
 

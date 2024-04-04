@@ -1,9 +1,8 @@
 import asyncio
 from openai import OpenAI
 import random
-from consts import Consts
+from consts import consts
 
-consts = Consts()
 
 from type_models import ViewedImage
 
@@ -12,7 +11,7 @@ import eyes.fake_captions as fake_captions
 
 semaphore = asyncio.Semaphore(10)  # 10 requests per second
 
-client = OpenAI(api_key=consts.OPENAI_API_KEY)
+client = OpenAI(api_key=consts().OPENAI_API_KEY)
 
 
 async def caption_image(image, info):
@@ -64,7 +63,7 @@ async def caption_image(image, info):
 
 
 async def async_batch_caption_images(images, info):
-    if consts.DO_FAKE_GPT_CALLS:
+    if consts().DO_FAKE_GPT_CALLS:
         results = [
             ViewedImage(
                 group_id=image["group_id"],
@@ -75,7 +74,6 @@ async def async_batch_caption_images(images, info):
             )
             for image in images
         ]
-
     tasks = [caption_image(image, info) for image in images]
     results = await asyncio.gather(*tasks)
     return results

@@ -1,14 +1,12 @@
 import helpers.tokenizer as tokenizer
-from consts import Consts
-
-consts = Consts()
+from consts import consts
 
 
 def chunkize(
     raw_data,
-    MAX_NUM_SENTENCES=consts.MAX_NUM_SENTENCES,
-    MAX_NUM_TOKENS=consts.MAX_NUM_TOKENS,
-    CHUNK_OVERLAP=consts.CHUNK_OVERLAP,
+    MAX_NUM_SENTENCES=consts().MAX_NUM_SENTENCES,
+    MAX_NUM_TOKENS=consts().MAX_NUM_TOKENS,
+    CHUNK_OVERLAP=consts().CHUNK_OVERLAP,
 ):
     combined_data = []
     current_sentence = ""
