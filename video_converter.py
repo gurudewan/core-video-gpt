@@ -104,7 +104,7 @@ def check_subtitles_available(url):
 
 def get_youtube_video_duration(video_id):
     """
-    Returns the duration of a YouTube video given its ID.
+    Returns the duration (in seconds) of a YouTube video given its ID.
     """
     ydl_opts = {
         "extract_flat": True,
