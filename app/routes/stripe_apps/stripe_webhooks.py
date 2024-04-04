@@ -1,7 +1,7 @@
 from fastapi import Request, APIRouter, Header
 from fastapi.responses import JSONResponse
 
-from app.apis.stripe_apps.stripe_app import stripe_app
+from app.routes.stripe_apps.stripe_app import stripe_app
 
 import app.database.subs_db as subs_db
 

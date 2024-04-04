@@ -4,7 +4,7 @@ from fastapi.encoders import jsonable_encoder
 
 
 from app.database import humans_db, subs_db
-from app.apis.auth.firebase_header import auth_header
+from app.routes.auth.firebase_header import auth_header
 
 from app.types.api_types import (
     HumanResponse,

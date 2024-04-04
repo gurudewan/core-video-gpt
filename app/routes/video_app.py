@@ -15,7 +15,7 @@ from app.helpers.video_metadata import format_video_metadata, update_info
 from app.helpers.gcs_helper import gcs
 from app.helpers.highlights_helper import extract_highlights
 
-from app.apis.auth.firebase_header import auth_header
+from app.routes.auth.firebase_header import auth_header
 
 import time
 from pprint import pprint
@@ -23,7 +23,7 @@ from app.types.type_models import ViewedImage, ViewedVideo
 
 import app.subscriptions.access_manager as access_manager
 
-import app.apis.chats_app as chats_app
+import app.routes.chats_app as chats_app
 
 from app.consts import consts
 
