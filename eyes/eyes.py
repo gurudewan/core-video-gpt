@@ -16,14 +16,6 @@ from . import llava_api
 from . import gptvision
 import filer
 
-from consts import APP_ENV
-
-# Load the clip model
-"""if APP_ENV == "DEV":
-    model, preprocess = clip.load("ViT-B/32")
-elif APP_ENV == "PROD":
-    model, preprocess = clip.load("ViT-B/32", download_root="./torch_cache")"""
-
 model, preprocess = clip.load("./torch_cache/ViT-B-32.pt")
 
 # TODO optimise these constants
