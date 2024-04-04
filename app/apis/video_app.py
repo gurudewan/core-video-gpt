@@ -2,7 +2,7 @@ import app.langchain_api.langchainer as langchainer
 
 import app.openai_api.chatgpt as chatgpt
 import app.openai_api.whisper as whisper
-import app.yt_api.video_converter as video_converter
+import app.video_api.video_converter as video_converter
 import app.file_api.filer as filer
 from app.eyes.eyes import see
 from fastapi import APIRouter, HTTPException, Depends
@@ -11,7 +11,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.types.api_types import VideoInput
 
 import app.helpers.srt_helper as srt_helper
-from app.helpers.video_metadata import format_video_metadata, update_info
+from app.video_api.video_metadata import format_video_metadata, update_info
 from app.helpers.gcs_helper import gcs
 from app.helpers.highlights_helper import extract_highlights
 

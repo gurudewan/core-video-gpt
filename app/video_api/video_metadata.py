@@ -1,5 +1,4 @@
 import json
-from app.helpers.gcs_helper import gcs
 
 from app.types.type_models import ViewedVideo, ViewedImage
 
