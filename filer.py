@@ -1,7 +1,7 @@
 import os
 import glob
 from helpers.gcs_helper import gcs
-import consts
+from consts import consts
 import shutil
 
 from langchain.schema import Document
@@ -31,7 +31,7 @@ def write_image_to_gcs(image: Image, blob_name: str) -> str:
         str: The public URL of the uploaded image.
     """
 
-    bucket_name = consts.BUCKET_NAME
+    bucket_name = consts().BUCKET_NAME
 
     # Create a BytesIO object and save the image to it
     byte_stream = BytesIO()
@@ -91,7 +91,7 @@ def make_video_public(video_id: str) -> None:
     Args:
         video_id (str): The ID of the video.
     """
-    bucket_name = consts.BUCKET_NAME
+    bucket_name = consts().BUCKET_NAME
     blob_name = f"/tmp/youtube/{video_id}/video.mp4"
 
     # Get the GCS bucket
@@ -110,7 +110,7 @@ def make_video_private(video_id: str) -> None:
     Args:
         video_id (str): The ID of the video.
     """
-    bucket_name = consts.BUCKET_NAME
+    bucket_name = consts().BUCKET_NAME
     blob_name = f"/tmp/youtube/{video_id}/video.mp4"
 
     # Get the GCS bucket
@@ -133,7 +133,7 @@ def get_signed_url(video_id: str) -> str:
     Returns:
         str: The signed URL of the video.
     """
-    bucket_name = consts.BUCKET_NAME
+    bucket_name = consts().BUCKET_NAME
     blob_name = f"/tmp/youtube/{video_id}/video.mp4"
 
     # Get the GCS bucket
