@@ -16,6 +16,8 @@ tmp/
 # test data
 test_data/
 eyes/test_eyes/
+eyes/playground/videos/
+
 
 # Distribution / packaging
 .DS_Store
