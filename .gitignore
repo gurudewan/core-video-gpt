@@ -16,6 +16,7 @@ tmp/
 # test data
 test_data/
 eyes/test_eyes/
+eyes/test_eyes/videos/
 eyes/playground/videos/
 
 
