@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 
 from api_types import ChatResponse
 
-chats_app = APIRouter()
+chats_app = APIRouter(tags=["chats"])
 
 from apis.auth.firebase_header import auth_header
 
