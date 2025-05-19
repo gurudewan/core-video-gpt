@@ -38,7 +38,6 @@ class consts(BaseSettings):
     # ================== EMAIL ==================
 
     EMAIL_ADDRESS: str = "flowmushin@gmail.com"
-    EMAIL_PASSWORD: str = "drhrojxsrpquzirx"  # OLD: "haefiuvrowtnfcez"
 
     # ================== OPENAI CONSTS ==================
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY")
@@ -81,12 +80,6 @@ class consts(BaseSettings):
 
     # ================== MONGO DB ==================
 
-    PROD_DB_CONN_STRING: str = (
-        "mongodb+srv://videogpt-admin-prod:DtxGBO7vGYCBX1SI@videogpt-cluster-prod.slh9p1m.mongodb.net/?retryWrites=true&w=majority"
-    )
-    DEV_DB_CONN_STRING: str = (
-        "mongodb+srv://videogpt-dbuser-dev:FpwXFpLaa3OvCFLh@videogpt-cluster-dev.rrbvlrz.mongodb.net/dev_db?retryWrites=true&w=majority"
-    )
 
     DB_CONN_STRING: str = (
         PROD_DB_CONN_STRING if APP_ENV == "PROD" else DEV_DB_CONN_STRING
@@ -99,7 +92,6 @@ class consts(BaseSettings):
 
     # ================== ARCHIVE ==================
     AZURE_ACCOUNT_ID: str = "a6fdeb9c-a185-40a2-a4b1-bb400d7f1b7a"
-    AZURE_SUBSCRIPTION_KEY: str = "ce1cdca2743048bebb01c98a909f3128"
 
     # ================== APP URL (AUTH) ==================
     DEV_VIDEOGPT_APP_URL: str = "http://localhost:19006"
@@ -117,21 +109,10 @@ class consts(BaseSettings):
 
     # API KEY
 
-    DEV_STRIPE_API_KEY: str = (
-        "sk_test_51OqkmEG64cILHqiWMJh3EWugoPXxdOCKP4z5auG0CRVcmrwXUOlbg2R7NmnvXA9uOBspLs7bEoJMwNzTk9HYDtuC00DU75dy4K"
-    )
-
-    PROD_STRIPE_API_KEY: str = (
-        "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"
-    )
 
     STRIPE_API_KEY: str = DEV_STRIPE_API_KEY
 
     # WEBHOOK SECRET
-
-    DEV_STRIPE_WEBHOOK_SECRET: str = (
-        "whsec_4c480cb9b13b7c53a109849f6686e3e0402b205c8cc795c62070fa50ab000f73"
-    )
 
     PROD_STRIPE_WEBHOOK_SECRET: str = ""
 
